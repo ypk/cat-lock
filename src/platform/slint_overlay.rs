@@ -28,8 +28,8 @@ slint::slint! {
                     Rectangle {
                         background: #F8F8F2;
                         border-radius: 20px;
-                        width: 300px;
-                        height: 150px;
+                        width: 640px;
+                        height: 480px;
                         drop-shadow-blur: 20px;
                         drop-shadow-color: #00000040;
                         
