@@ -40,15 +40,9 @@ slint::slint! {
                                 alignment: center;
                                 Image { source: @image-url("../../assets/active.png"); width: 90px; height: 90px; }
                             }
-                            Text { text: "Click to unlock"; font-size: 22px; font-weight: 500; horizontal-alignment: center; color: #222222; }
+                            Text { text: root.hotkey_text; font-size: 22px; font-weight: 500; horizontal-alignment: center; color: #222222; }
                         }
                     }
-                }
-                
-                // Hints
-                VerticalBox {
-                    spacing: 6px;
-                    Text { text: root.hotkey_text; color: #FFFFFF80; horizontal-alignment: center; font-size: 14px; }
                 }
             }
         }
