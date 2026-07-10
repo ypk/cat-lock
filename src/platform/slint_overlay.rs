@@ -41,7 +41,7 @@ slint::slint! {
                         VerticalBox {
                             alignment: center;
                             spacing: 12px;
-                            Text { text: "🔓"; font-size: 40px; horizontal-alignment: center; }
+                            Image { source: @image-url("../../assets/active.png"); width: 60px; height: 60px; }
                             Text { text: "Click to unlock"; font-size: 22px; font-weight: 500; horizontal-alignment: center; color: #222222; }
                         }
                     }
