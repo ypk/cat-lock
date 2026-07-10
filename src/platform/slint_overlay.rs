@@ -98,6 +98,7 @@ impl OverlayWindow for SlintOverlay {
             let _ = ui_weak.upgrade_in_event_loop(move |ui| {
                 ui.set_is_privacy(privacy_mode);
                 ui.set_hotkey_text(slint::SharedString::from(hotkey_str));
+                ui.window().set_fullscreen(true);
                 let _ = ui.window().show();
             });
             return Ok(());
