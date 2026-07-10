@@ -66,8 +66,6 @@ impl SlintOverlay {
                 }
             };
             
-            // Initially hidden
-            let _ = ui.window().hide();
             
             if tx.send(ui.as_weak()).is_ok() {
                 if let Err(e) = slint::run_event_loop_until_quit() {

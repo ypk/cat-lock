@@ -16,7 +16,7 @@ dirs = "6"
 log = "0.4"
 fern = "0.7"
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
-image = { version = "0.24", default-features = false, features = ["png"] }
+image = { version = "0.24", default-features = false, features = ["ico", "png"] }
 x11rb = "0.13"
 notify-rust = "4.18.0"
 slint = "1.17.1"
@@ -48,3 +48,6 @@ panic = "abort"
 [[bin]]
 name = "catlock"
 path = "src/main.rs"
+
+[build-dependencies]
+winres = "0.1.12"
