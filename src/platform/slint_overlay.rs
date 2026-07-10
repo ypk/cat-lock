@@ -66,10 +66,6 @@ impl SlintOverlay {
                 }
             };
             
-            // Force initialization of graphics context by showing and hiding
-            let _ = ui.show();
-            let _ = ui.window().hide();
-            
             if tx.send(ui.as_weak()).is_ok() {
                 if let Err(e) = slint::run_event_loop_until_quit() {
                     log::error!("Slint event loop error: {}", e);
@@ -90,8 +86,8 @@ impl OverlayWindow for SlintOverlay {
             let _ = ui_weak.upgrade_in_event_loop(move |ui| {
                 ui.set_is_privacy(privacy_mode);
                 ui.set_hotkey_text(slint::SharedString::from(hotkey_str));
-                ui.window().set_fullscreen(true);
                 let _ = ui.window().show();
+                ui.window().set_fullscreen(true);
             });
             return Ok(());
         }
