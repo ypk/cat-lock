@@ -13,7 +13,6 @@ use tray_icon::{Icon, TrayIcon, TrayIconBuilder};
 pub struct TrayMenuIds {
     pub toggle_privacy: MenuItem,
     pub toggle_console: MenuItem,
-    pub toggle_auto_detect: MenuItem,
     pub toggle_notifications: MenuItem,
     pub about: MenuItem,
     pub quit: MenuItem,
@@ -26,7 +25,7 @@ pub fn create_tray(
     is_locked: bool,
     is_privacy: bool,
     show_console: bool,
-    auto_detect_cat: bool,
+    _auto_detect_cat: bool,
     notifications_enabled: bool,
     hotkey_str: &str,
 ) -> Result<(TrayIcon, TrayMenuIds), String> {
@@ -47,12 +46,6 @@ pub fn create_tray(
     };
     let toggle_console = MenuItem::new(console_text, true, None);
 
-    let auto_detect_text = if auto_detect_cat {
-        "Auto-Detect Cat (PawSense): ON"
-    } else {
-        "Auto-Detect Cat (PawSense): OFF"
-    };
-    let toggle_auto_detect = MenuItem::new(auto_detect_text, true, None);
 
     let notif_text = if notifications_enabled {
         "Desktop Notifications: ON"
@@ -64,7 +57,6 @@ pub fn create_tray(
     let settings_submenu = Submenu::new("Settings", true);
     settings_submenu.append(&toggle_privacy).map_err(|e| e.to_string())?;
     settings_submenu.append(&toggle_console).map_err(|e| e.to_string())?;
-    settings_submenu.append(&toggle_auto_detect).map_err(|e| e.to_string())?;
     settings_submenu.append(&toggle_notifications).map_err(|e| e.to_string())?;
 
     let about = MenuItem::new("About CatLock", true, None);
@@ -96,7 +88,6 @@ pub fn create_tray(
     let ids = TrayMenuIds {
         toggle_privacy,
         toggle_console,
-        toggle_auto_detect,
         toggle_notifications,
         about,
         quit,
@@ -114,7 +105,7 @@ pub fn update_tray(
     is_locked: bool,
     is_privacy: bool,
     show_console: bool,
-    auto_detect_cat: bool,
+    _auto_detect_cat: bool,
     notifications_enabled: bool,
     hotkey_str: &str,
 ) {
@@ -129,11 +120,7 @@ pub fn update_tray(
     } else {
         "Show Console: OFF"
     };
-    let auto_detect_text = if auto_detect_cat {
-        "Auto-Detect Cat (PawSense): ON"
-    } else {
-        "Auto-Detect Cat (PawSense): OFF"
-    };
+
     let notif_text = if notifications_enabled {
         "Desktop Notifications: ON"
     } else {
@@ -143,7 +130,6 @@ pub fn update_tray(
     ids.info_hotkey.set_text(&info_text);
     ids.toggle_privacy.set_text(privacy_text);
     ids.toggle_console.set_text(console_text);
-    ids.toggle_auto_detect.set_text(auto_detect_text);
     ids.toggle_notifications.set_text(notif_text);
 
     let _ = tray.set_tooltip(Some(if is_locked {

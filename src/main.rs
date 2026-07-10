@@ -263,23 +263,7 @@ fn main() {
                     &settings.hotkey_display_string(),
                 );
                 log::info!("Console visibility: {}", settings.logging.show_console);
-            } else if event.id() == menu_ids.toggle_auto_detect.id() {
-                settings.auto_detect_cat = !settings.auto_detect_cat;
-                if let Err(e) = settings.save() {
-                    log::error!("Failed to save settings: {}", e);
-                }
-                controller.set_auto_detect_cat(settings.auto_detect_cat);
-                tray::update_tray(
-                    &tray,
-                    &menu_ids,
-                    controller.is_locked(),
-                    settings.privacy_mode,
-                    settings.logging.show_console,
-                    settings.auto_detect_cat,
-                    settings.notifications_enabled,
-                    &settings.hotkey_display_string(),
-                );
-                log::info!("Auto-detect cat mode: {}", settings.auto_detect_cat);
+
             } else if event.id() == menu_ids.toggle_notifications.id() {
                 settings.notifications_enabled = !settings.notifications_enabled;
                 if let Err(e) = settings.save() {

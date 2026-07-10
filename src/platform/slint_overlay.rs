@@ -28,8 +28,8 @@ slint::slint! {
                     Rectangle {
                         background: #F8F8F2;
                         border-radius: 20px;
-                        width: 640px;
-                        height: 480px;
+                        width: 320px;
+                        height: 240px;
                         drop-shadow-blur: 20px;
                         drop-shadow-color: #00000040;
                         
@@ -66,6 +66,9 @@ impl SlintOverlay {
                 }
             };
             
+            // Force initialization of graphics context by showing and hiding
+            let _ = ui.show();
+            let _ = ui.window().hide();
             
             if tx.send(ui.as_weak()).is_ok() {
                 if let Err(e) = slint::run_event_loop_until_quit() {
