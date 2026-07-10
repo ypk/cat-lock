@@ -12,20 +12,15 @@ slint::slint! {
         in property <string> hotkey_text: "";
         
         Rectangle {
-            // Full black for privacy mode, 40% black otherwise
-            background: root.is_privacy ? #000000 : #00000066; 
+            // Full black for privacy mode, 75% black otherwise
+            background: root.is_privacy ? #000000 : #000000BF; 
             animate background { duration: 250ms; }
             
             VerticalBox {
                 alignment: center;
                 spacing: 20px;
                 
-                // Cat icon placeholder
-                Text { 
-                    text: "🐈"; 
-                    font-size: 60px; 
-                    horizontal-alignment: center; 
-                }
+
                 
                 // Box
                 HorizontalLayout {
@@ -41,7 +36,10 @@ slint::slint! {
                         VerticalBox {
                             alignment: center;
                             spacing: 12px;
-                            Image { source: @image-url("../../assets/active.png"); width: 60px; height: 60px; }
+                            HorizontalLayout {
+                                alignment: center;
+                                Image { source: @image-url("../../assets/active.png"); width: 90px; height: 90px; }
+                            }
                             Text { text: "Click to unlock"; font-size: 22px; font-weight: 500; horizontal-alignment: center; color: #222222; }
                         }
                     }
@@ -50,7 +48,6 @@ slint::slint! {
                 // Hints
                 VerticalBox {
                     spacing: 6px;
-                    Text { text: "System will not sleep. Ensure sufficient battery."; color: #FFFFFFB2; horizontal-alignment: center; font-size: 14px; }
                     Text { text: root.hotkey_text; color: #FFFFFF80; horizontal-alignment: center; font-size: 14px; }
                 }
             }
