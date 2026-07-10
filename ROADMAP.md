@@ -13,8 +13,8 @@ Provide a **single‑source Rust code‑base** that delivers the same locking ex
 | Core (settings, UI, logging, CLI) | Windows & Linux | ✅ Complete (shared) | Stable, builds on both OSes. |
 | Input interceptor | Windows | ✅ `Win32InputHook` (global hotkey, input block) | Works via Win32 API. |
 | Input interceptor | Linux | ✅ `LinuxInputGrab` (x11rb XGrabKeyboard/Pointer) | Hooks X11 inputs. |
-| Overlay window | Windows | ✅ `Win32Overlay` (fullscreen semi‑transparent/black) | |
-| Overlay window | Linux | ✅ `LinuxOverlay` (x11rb override-redirect) | Fullscreen opaque/transparent. |
+| Overlay window | Windows | ✅ `SlintOverlay` (Slint cross-platform UI) | Fullscreen opaque/transparent. |
+| Overlay window | Linux | ✅ `SlintOverlay` (Slint cross-platform UI) | Fullscreen opaque/transparent. |
 | Power inhibitor | Windows | ✅ `Win32PowerInhibitor` (calls `SetThreadExecutionState`) | |
 | Power inhibitor | Linux | ✅ `LinuxPowerInhibitor` (uses `zbus` logind Inhibit) | |
 | CI / Tests | Both | ✅ Complete | Cross-platform tests and GitHub Actions CI in place. |
@@ -37,7 +37,7 @@ Provide a **single‑source Rust code‑base** that delivers the same locking ex
 | L1 | **Add dependencies** | `zbus` for D‑Bus power inhibition, optionally `winit` for overlay, keep `x11rb`. | ✅ Done |
 | L2 | **PowerInhibitor** (`src/platform/linux/power.rs`) | Replace stub with real D‑Bus call to `org.freedesktop.login1.Manager.Inhibit`. Store inhibitor handle, implement `Drop`. | ✅ Done |
 | L3 | **InputInterceptor** (`src/platform/linux/input_grab.rs`) | Use `x11rb` to connect to X server, register global hotkey (`Ctrl+Shift+L`), call `XGrabKeyboard`/`XGrabPointer` to block input, release on unlock, provide `Drop`. | ✅ Done |
-| L4 | **OverlayWindow** (`src/platform/linux/overlay.rs`) | Create a fullscreen X11 window (or via `winit`) on each monitor; set opacity based on privacy mode; implement show/hide/is_visible. | ✅ Done |
+| L4 | **OverlayWindow** (`src/platform/slint_overlay.rs`) | Use Slint framework to create a cross-platform GUI overlay window; implement show/hide/is_visible. | ✅ Done |
 | L5 | **Linux `mod.rs`** | Export the new structs, re‑export trait implementations, ensure `create_*` factories compile. | ✅ Done |
 | L6 | **Unit & integration tests** | Mock X11 where possible; test hot‑key registration, input grab/release, overlay visibility, power inhibition via D‑Bus. | ✅ Done |
 | L7 | **Documentation** | Update README with Linux installation steps, required X server/Wayland, permissions (e.g., `Xorg` access), usage examples. | ✅ Done |
@@ -71,7 +71,7 @@ Provide a **single‑source Rust code‑base** that delivers the same locking ex
 | # | Work Item | Description | Estimated Effort |
 |---|-----------|-------------|------------------|
 | F1 | **Overlay opacity slider** | ❌ Cancelled | Expose `overlay_alpha: u8` in `config.json`. (Cancelled by user request, opacity functionality removed entirely). |
-| F5 | **PawSense (Auto-Detect Cat)** | ✅ Done | Automatically lock the screen if a cat walks on the keyboard by detecting 4+ non-modifier keys pressed within 50ms. Works on Windows via `WH_KEYBOARD_LL` hook and Linux via `XQueryKeymap` polling. |
+| F5 | **PawSense (Auto-Detect Cat)** | ✅ Done | Automatically lock the screen if a cat walks on the keyboard by detecting 4+ non-modifier keys pressed within 50ms. Works on Windows via `WH_KEYBOARD_LL` hook and Linux via `XQueryKeymap` polling. (Permanently ON by design, UI toggle removed). |
 | F2 | **System notifications** | ✅ Done | On lock and unlock events, fire a desktop notification: Windows via `ToastNotification` (WinRT) or a simpler `Shell_NotifyIcon` balloon tip; Linux via `notify-send` (D‑Bus `org.freedesktop.Notifications`). Add `notifications_enabled: bool` to `config.json` (default `true`) and a tray menu toggle. |
 | F3 | **Code signing** | ❌ Cancelled | Skipped: Requires paid certificate or manual human verification for open-source foundations. |
 | F4 | **Auto-update check** | ❌ Cancelled | Skipped: The app is extremely stable and feature-complete. Adding HTTP capabilities (`ureq`/`reqwest`) would unnecessarily bloat the binary size for a feature that is rarely needed. |

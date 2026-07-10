@@ -7,7 +7,7 @@ Cross-platform rewrite of [CatLock](https://github.com/hou-physics/CatLock), bre
 ## Features
 
 - **Global hotkey** — `Ctrl+Shift+L` from any app to instantly lock all input
-- **Fullscreen overlay** — Semi-transparent overlay blocks all keyboard and mouse input
+- **Fullscreen overlay** — Beautiful semi-transparent Slint GUI overlay blocks all keyboard and mouse input
 - **PawSense (Auto-Detect Cat)** — Automatically locks your screen if a cat walks on your keyboard (Cross-platform)
 - **Privacy mode** — Fully opaque black overlay hides your screen
 - **Silent startup** — Runs purely in the system tray without spawning a console window by default
@@ -95,7 +95,7 @@ This pulls in `winit` and related Wayland crates. The default build remains X11�
 
 ## Architecture
 
-Written in Rust with a platform abstraction layer:
+Written in Rust using `slint` for the UI and a custom platform abstraction layer:
 
 ```
 src/
@@ -131,8 +131,10 @@ Only ~9 crates — no Electron, no Tauri, no frameworks:
 - `log` / `fern` (logging dispatcher — console + file)
 - `chrono` (ISO‑8601 timestamps in log output)
 - `image` (PNG icon decoding)
+- `slint` (cross-platform GUI for the lock screen overlay)
 - `x11rb` (X11 communication, Linux only)
 - `zbus` (D‑Bus power inhibition, Linux only)
+- `winres` (Windows executable icon compilation)
 
 ## License
 
