@@ -64,7 +64,29 @@ pub struct SlintOverlay {
 
 impl SlintOverlay {
     pub fn new() -> Self {
-        Self { ui_weak: None }
+        let (tx, rx) = std::sync::mpsc::channel();
+        
+        std::thread::spawn(move || {
+            let ui = match LockWindow::new() {
+                Ok(ui) => ui,
+                Err(e) => {
+                    log::error!("Failed to create Slint window: {}", e);
+                    return;
+                }
+            };
+            
+            // Initially hidden
+            let _ = ui.window().hide();
+            
+            if tx.send(ui.as_weak()).is_ok() {
+                if let Err(e) = slint::run_event_loop_until_quit() {
+                    log::error!("Slint event loop error: {}", e);
+                }
+            }
+        });
+        
+        let ui_weak = rx.recv().ok();
+        Self { ui_weak }
     }
 }
 
@@ -72,42 +94,16 @@ impl OverlayWindow for SlintOverlay {
     fn show(&mut self, privacy_mode: bool, hotkey_str: &str) -> Result<(), String> {
         let hotkey_str = format!("Press {} to unlock", hotkey_str);
         
-        // If it's already running, just update and show
         if let Some(ui_weak) = &self.ui_weak {
-            if let Some(_ui) = ui_weak.upgrade() {
-                let _ = ui_weak.upgrade_in_event_loop(move |ui| {
-                    ui.set_is_privacy(privacy_mode);
-                    ui.set_hotkey_text(slint::SharedString::from(hotkey_str));
-                    let _ = ui.window().show();
-                });
-                return Ok(());
-            }
+            let _ = ui_weak.upgrade_in_event_loop(move |ui| {
+                ui.set_is_privacy(privacy_mode);
+                ui.set_hotkey_text(slint::SharedString::from(hotkey_str));
+                let _ = ui.window().show();
+            });
+            return Ok(());
         }
 
-        let hotkey_str_clone = hotkey_str.clone();
-        
-        let (tx, rx) = std::sync::mpsc::channel();
-        
-        std::thread::spawn(move || {
-            let ui = match LockWindow::new() {
-                Ok(ui) => ui,
-                Err(e) => {
-                    let _ = tx.send(Err(format!("Failed to create Slint window: {}", e)));
-                    return;
-                }
-            };
-            
-            ui.set_is_privacy(privacy_mode);
-            ui.set_hotkey_text(slint::SharedString::from(hotkey_str_clone));
-            
-            if tx.send(Ok(ui.as_weak())).is_ok() {
-                let _ = ui.run();
-            }
-        });
-        
-        self.ui_weak = Some(rx.recv().map_err(|e| format!("Channel error: {}", e))??);
-        
-        Ok(())
+        Err("Slint UI was not successfully initialized.".to_string())
     }
 
     fn hide(&mut self) -> Result<(), String> {
@@ -115,8 +111,6 @@ impl OverlayWindow for SlintOverlay {
             let _ = ui_weak.upgrade_in_event_loop(|ui| {
                 let _ = ui.window().hide();
             });
-            // Clear the weak ref so next show() spawns a new window.
-            self.ui_weak = None;
         }
         log::info!("Slint overlay hidden");
         Ok(())
