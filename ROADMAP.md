@@ -1,6 +1,6 @@
 # CatLock – Cross‑Platform Roadmap
 
-**Version:** 0.3 – 2026‑07‑10
+**Version:** 0.4 – 2026‑07‑11
 
 ## 1️⃣ High‑Level Goal
 Provide a **single‑source Rust code‑base** that delivers the same locking experience on **Windows** *and* **Linux**, with a polished UI, hot‑key support, global input blocking, fullscreen overlay, and power‑inhibition.
@@ -71,7 +71,7 @@ Provide a **single‑source Rust code‑base** that delivers the same locking ex
 | # | Work Item | Description | Estimated Effort |
 |---|-----------|-------------|------------------|
 | F1 | **Overlay opacity slider** | ❌ Cancelled | Expose `overlay_alpha: u8` in `config.json`. (Cancelled by user request, opacity functionality removed entirely). |
-| F5 | **PawSense (Auto-Detect Cat)** | ✅ Done | Automatically lock the screen if a cat walks on the keyboard by detecting 4+ non-modifier keys pressed within 50ms. Works on Windows via `WH_KEYBOARD_LL` hook and Linux via `XQueryKeymap` polling. (Permanently ON by design, UI toggle removed). |
+| F5 | **PawSense (Auto-Detect Cat)** | ✅ Done | Automatically lock the screen if a cat walks on the keyboard by detecting 4+ non-modifier keys pressed within 100ms. Works on Windows via `WH_KEYBOARD_LL` hook and Linux via `XQueryKeymap` polling. (Permanently ON by design, UI toggle removed, fine-tuned to avoid fast-typist false positives). |
 | F2 | **System notifications** | ✅ Done | On lock and unlock events, fire a desktop notification: Windows via `ToastNotification` (WinRT) or a simpler `Shell_NotifyIcon` balloon tip; Linux via `notify-send` (D‑Bus `org.freedesktop.Notifications`). Add `notifications_enabled: bool` to `config.json` (default `true`) and a tray menu toggle. |
 | F3 | **Code signing** | ❌ Cancelled | Skipped: Requires paid certificate or manual human verification for open-source foundations. |
 | F4 | **Auto-update check** | ❌ Cancelled | Skipped: The app is extremely stable and feature-complete. Adding HTTP capabilities (`ureq`/`reqwest`) would unnecessarily bloat the binary size for a feature that is rarely needed. |

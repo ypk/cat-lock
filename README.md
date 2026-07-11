@@ -8,7 +8,7 @@ Cross-platform rewrite of [CatLock](https://github.com/hou-physics/CatLock), bre
 
 - **Global hotkey** — `Ctrl+Shift+L` from any app to instantly lock all input
 - **Fullscreen overlay** — Beautiful semi-transparent Slint GUI overlay blocks all keyboard and mouse input
-- **PawSense (Auto-Detect Cat)** — Automatically locks your screen if a cat walks on your keyboard (Cross-platform)
+- **PawSense (Auto-Detect Cat)** — Automatically locks your screen if a cat walks on your keyboard (Detects 4+ keys pressed within 100ms)
 - **Privacy mode** — Fully opaque black overlay hides your screen
 - **Silent startup** — Runs purely in the system tray without spawning a console window by default
 - **System tray** — Lives in your system tray, stays out of your way
