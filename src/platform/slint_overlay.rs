@@ -28,14 +28,14 @@ slint::slint! {
                     Rectangle {
                         background: #F8F8F2;
                         border-radius: 20px;
-                        width: 320px;
+                        width: 480px;
                         height: 240px;
                         drop-shadow-blur: 20px;
                         drop-shadow-color: #00000040;
                         
                         VerticalBox {
                             alignment: center;
-                            spacing: 12px;
+                            spacing: 36px;
                             HorizontalLayout {
                                 alignment: center;
                                 Image { source: @image-url("../../assets/active.png"); width: 90px; height: 90px; }
