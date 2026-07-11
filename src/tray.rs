@@ -145,12 +145,8 @@ pub fn update_tray(
 }
 
 /// Create the icon by parsing the embedded PNGs.
-fn create_default_icon(is_locked: bool) -> Result<Icon, String> {
-    let bytes = if is_locked {
-        include_bytes!("../assets/active.png").as_slice()
-    } else {
-        include_bytes!("../assets/inactive.png").as_slice()
-    };
+fn create_default_icon(_is_locked: bool) -> Result<Icon, String> {
+    let bytes = include_bytes!("../assets/app_icon.png").as_slice();
     
     let image = image::load_from_memory(bytes)
         .map_err(|e| format!("Failed to parse icon: {}", e))?
