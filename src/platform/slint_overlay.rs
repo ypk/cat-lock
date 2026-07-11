@@ -86,8 +86,15 @@ impl OverlayWindow for SlintOverlay {
             let _ = ui_weak.upgrade_in_event_loop(move |ui| {
                 ui.set_is_privacy(privacy_mode);
                 ui.set_hotkey_text(slint::SharedString::from(hotkey_str));
-                let _ = ui.window().show();
-                ui.window().set_fullscreen(true);
+                let _ = ui.show();
+                
+                // Delay fullscreen by 50ms to ensure the window is mapped on Windows
+                let ui_weak2 = ui.as_weak();
+                slint::Timer::single_shot(std::time::Duration::from_millis(50), move || {
+                    if let Some(ui2) = ui_weak2.upgrade() {
+                        ui2.window().set_fullscreen(true);
+                    }
+                });
             });
             return Ok(());
         }

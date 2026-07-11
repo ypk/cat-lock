@@ -4,7 +4,7 @@ use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use windows::Win32::Foundation::{LPARAM, WPARAM};
 
 pub const PAWSENSE_KEY_COUNT: usize = 4;
-pub const PAWSENSE_THRESHOLD_MS: u64 = 50;
+pub const PAWSENSE_THRESHOLD_MS: u64 = 200;
 
 static PAW_HISTORY: [AtomicU64; PAWSENSE_KEY_COUNT] = [
     AtomicU64::new(0),
