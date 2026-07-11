@@ -78,20 +78,16 @@ The log file is written to:
 
 ## Linux Installation & Runtime
 
-CatLock works on any Linux desktop that provides an **Xorg** server (including XWayland which is present on most modern Wayland sessions).
+CatLock works on any Linux desktop that provides a native **Xorg (X11)** server. 
 
-1. **Install Xorg / XWayland** (if not already present):
-   - Ubuntu/Debian: `sudo apt install xorg` (or `sudo apt install xwayland` for Wayland sessions)
-   - Fedora: `sudo dnf install xorg-x11-server-Xorg` (or `sudo dnf install xwayland`)
+> [!WARNING]
+> **Wayland is NOT supported.** Because Wayland's strict security architecture fundamentally forbids applications from creating global input grabs or functioning as global keyloggers, CatLock cannot intercept inputs globally under a Wayland session. While the UI may launch under XWayland, the core lock and PawSense mechanisms will not function. Please use your compositor's built-in lock screen for Wayland.
+
+1. **Install Xorg** (if not already present):
+   - Ubuntu/Debian: `sudo apt install xorg`
+   - Fedora: `sudo dnf install xorg-x11-server-Xorg`
 2. Ensure the `x11rb` crate can connect to the X server (the default `$DISPLAY` environment variable is used).
 3. Run the binary as usual – the lock will capture input via X11, display the fullscreen overlay, and inhibit sleep using the Linux D‑Bus logind interface.
-
-### Optional Wayland Support
-If you need native Wayland support, enable the optional Cargo feature:
-```bash
-cargo build --release --features wayland
-```
-This pulls in `winit` and related Wayland crates. The default build remains X11‑only for a smaller, zero‑configuration binary.
 
 ## Architecture
 
@@ -118,7 +114,7 @@ src/
 |---|---|
 | Windows 10/11 | ✅ Fully implemented |
 | Linux (X11) | ✅ Fully implemented |
-| Linux (Wayland) | 📋 Optional feature, planned |
+| Linux (Wayland) | ❌ Unsupported (Blocked by Wayland security model) |
 | macOS | Use [original CatLock](https://github.com/hou-physics/CatLock) |
 
 ## Dependencies
