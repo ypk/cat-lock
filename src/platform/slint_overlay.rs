@@ -38,7 +38,7 @@ slint::slint! {
                             spacing: 36px;
                             HorizontalLayout {
                                 alignment: center;
-                                Image { source: @image-url("../../assets/app_icon.png"); width: 90px; height: 90px; }
+                                Image { source: @image-url("../../assets/active.png"); width: 90px; height: 90px; }
                             }
                             Text { text: root.hotkey_text; font-size: 22px; font-weight: 500; horizontal-alignment: center; color: #222222; }
                         }
